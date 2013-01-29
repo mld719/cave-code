@@ -1,9 +1,8 @@
-
 /**
- * Write a description of class Model here.
+ * ADAPT Model Code
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Megan DeLaunay
+ * @version 1/28/13
  */
 public class Model
 {
