@@ -1,9 +1,8 @@
-
 /**
- * Write a description of class Frame here.
+ * ADAPT Model Frame Class
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Megan DeLaunay
+ * @version 1/28/13
  */
 public class Frame
 {
