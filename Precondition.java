@@ -13,26 +13,17 @@ public class Precondition
    
     public void setUp(String p)
     {
+        //input types: digit(i), teen, decade, hundred, thousand(k), million, billion
+        
         //string looks like these:
-        // input = digit, frame = n, wms = n 
-        // input = digit, frame = y 'hundred', wms = y 8 
+        // input = i, frame = n 'n', wms = n 0
+        // input = i, frame = y 'k', wms = y 8 
        
-        int i = p.indexOf("=");
-        int j = p.indexOf(",");
+        String input = p.substring(8,9);
         
-        String in = p.substring(i+2,j);
-        in.trim();
+        //System.out.println(input);
         
-        System.out.println(in);
-        
-        p = p.substring(j+1);
-        
-        i = p.indexOf("=");
-        
-        String f = p.substring(i+2, i+3);
-        f.trim();
-        
-        System.out.println(f);
+        String f = p.substring(19);
         
         if(f.equals("n"))
         {
@@ -42,26 +33,17 @@ public class Precondition
         {
             hasFrame = true;
             
-            i = p.indexOf("'");
-            j = p.lastIndexOf("'");
+            String size = p.substring(22, 23) ;        
+            actual = new Frame(size);
             
-            String s = p.substring(i+1,j).trim();
-            actual = new Frame(s);
-            
-            System.out.println(s);
-            //System.out.println(output.toString());
+            //System.out.println(size);
         }
         
-        System.out.println(hasFrame);
+        //System.out.println(hasFrame);
         
-        p = p.substring(j+1);
+        String w = p.substring(32,33);
         
-        i = p.indexOf("=");
-        
-        String w = p.substring(i+2, i+3);
-        w.trim();
-        
-        System.out.println(w);
+        //System.out.println(w);
         
         if(w.equals("n"))
         {
@@ -71,13 +53,13 @@ public class Precondition
         {
             hasWMS = true;
             
-            String wms = p.substring(i+4).trim();
+            String wms = p.substring(34);
             
             WMS = Integer.parseInt(wms);
             
-            System.out.println(WMS);
+            //System.out.println(WMS);
         }
         
-        System.out.println(hasWMS);
+        //System.out.println(hasWMS);
     }
 }
