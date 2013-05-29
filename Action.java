@@ -4,13 +4,13 @@ public class Action
     boolean hasWMS;
     Frame output;
     int WMS;
+    
+    //n(one) d (teen?) h k m b
 
-
+    
+    
     public Action(String a) //line from file
     {
-        //string looks like these:
-        // frame = n, wms = n
-        // frame = y 'thousand', wms = y 8
         
         setUp(a);
     }
@@ -18,13 +18,14 @@ public class Action
     
     public void setUp(String a)
     {
+        //string looks like these:
+        // frame = n 'n', wms = n 0 
+        // frame = y 'k', wms = y 8
+
+        String f = a.substring(8, 9);
         
-        int i = a.indexOf("=");
+        //System.out.println(f);
         
-        String f = a.substring(i+2, i+3);
-        f.trim();
-        
-        System.out.println(f);
         
         if(f.equals("n"))
         {
@@ -34,24 +35,18 @@ public class Action
         {
             hasFrame = true;
             
-            i = a.indexOf("'");
-            int j = a.lastIndexOf("'");
+            String size = a.substring(11,12);
+            output = new Frame(size);
             
-            String s = a.substring(i+1,j).trim();
-            output = new Frame(s);
-            
-            System.out.println(s);
-            //System.out.println(output.toString());
+            //System.out.println(size);
         }
         
-        System.out.println(hasFrame);
+        //System.out.println(hasFrame);
         
         
-        int k = a.lastIndexOf("=");
-        String w = a.substring(k+2, k+3);
+        String w = a.substring(21,22);
         
-        System.out.println(w);
-        w.trim();
+        //System.out.println(w);
         
         if(w.equals("n"))
         {
@@ -60,14 +55,14 @@ public class Action
         else
         {
             hasWMS = true;
-            String wms = a.substring(k+4).trim();
+            String wms = a.substring(23);
             
             WMS = Integer.parseInt(wms);
             
-            System.out.println(WMS);
+            //System.out.println(WMS);
         }
         
-        System.out.println(hasWMS);
+        //System.out.println(hasWMS);
         
     }
 }
