@@ -1,20 +1,26 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Write a description of class Model here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
 public class Model
 {
     String filename;
     String number;
-    
+
     boolean hasFrame;
     boolean hasTmp;
     boolean hasWMS;
-    
+
     Chunk currentTmp;
     Frame currentFrame; 
     int WMS = 0; 
     String inputType; 
-    
+
     State currentState = new State(currentFrame, currentTmp, WMS);
 
     public Model(String f, String n)
@@ -22,16 +28,17 @@ public class Model
         filename = f;
         number = n;
     }
-    
+
     public String go()
     {
+        //this is used by the tester class
         ArrayList<String> lines = getFull(filename);
         ArrayList<Precondition> pres = getPre(lines);
         ArrayList<Action> actions = getAction(lines);
         ArrayList<Production> prods = makeProductions(pres, actions);
-        
+
         transcode(number, prods);
-        
+
         return currentFrame.toString();
     }
 
@@ -122,58 +129,39 @@ public class Model
 
         return prods;
     }
-    
+
     public void transcode(String number, ArrayList<Production> prods)
     {
-        String[] array = number.split(" ");
+        //String[] array = number.split(" ");
 
-        for(int i = 0; i < array.length; i++)
+        Scanner scanner = new Scanner(number);
+
+        while(scanner.hasNext() || currentTmp != null || WMS != 0 || currentFrame.toString().contains("__"))
         {
-            String word = array[i];
+            String word = "";
 
+            if(scanner.hasNext())
+            {
+                word = scanner.next();
+                //System.out.println(word);
+            }
+            
             Precondition p = setPrecondition(word);
             //now need to match this precondition to the right production
 
             double[] matches = matchProds(p, prods); //now has 0 - 1 matching score (increment by 0.2);
             //need to now pick which one # is the best, pick that production, and fire that action
 
-            /*
-            for(int j = 0; j < matches.length; j++)
-            {
-                System.out.println("Matching score: " + matches[j]);
-            }
-            */
-
             int index = findBestProd(matches);
             Production bestMatch = prods.get(index);
-            
+
             System.out.println(bestMatch);
 
             fire(bestMatch.getAction(), word);
+
         }
-        
-        while(currentTmp != null || WMS != 0)
-        {
-            String word = "";
-            Precondition p = setPrecondition(word);
-            
-            Production best = prods.get(findBestProd(matchProds(p, prods)));
-            
-            System.out.println(best);
-            
-            fire(best.getAction(), word);
-        }
-        
-        
-        if(currentFrame.toString().contains("__"))
-        {
-            Precondition p = new Precondition("f", true, false, false);
-            Production best = prods.get(findBestProd(matchProds(p, prods)));
-            
-            fire(best.getAction(), "");
-        }
-        
-        
+
+
         System.out.println(currentFrame.toString());
     }
 
@@ -223,7 +211,7 @@ public class Model
         {
             hasFrame = true;
         }
-        
+
         if(currentTmp == null)
         {
             hasTmp = false;
@@ -232,7 +220,7 @@ public class Model
         {
             hasTmp = true;
         }
-        
+
         if(WMS == 0)
         {
             hasWMS = false;
@@ -241,12 +229,10 @@ public class Model
         {
             hasWMS = true;
         }
-        
+
         Precondition current = new Precondition(inputType, hasFrame, hasWMS, hasTmp); //creates a precondition
 
-        
         //frame and WMS are update in the action side of things
-
         return current;
     }
 
@@ -291,7 +277,7 @@ public class Model
             {
                 match = match + 0.25;
             }
-            
+
             if(currentTMP == prodTMP)
             {
                 match = match + 0.25;
@@ -302,6 +288,17 @@ public class Model
                 match = match + 0.25;
             }
 
+            /*
+            if(currentFrameSize.equals(prodFrameSize))
+            {
+            match = match + 0.2;
+            }
+
+            if(currentWMSnum == prodWMSnum)
+            {
+            match = match + 0.2;
+            }
+             */
 
             matches[i] = match;
         }
@@ -330,20 +327,18 @@ public class Model
         return index;
     }
 
-    
     public void fire(Action a, String word)
     {
 
 
         currentState = a.update(currentState, word);
-        
+
         currentFrame = currentState.getFrame();
         currentTmp   = currentState.getTMP();
         WMS          = currentState.getWMS();
-        
 
-        
+        //figure out what to return here.
+        //what if i return a precondition
+
     }
-    
-
 }
