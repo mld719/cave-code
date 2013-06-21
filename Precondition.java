@@ -1,29 +1,57 @@
+
 public class Precondition
 {
     boolean hasFrame;
+    boolean hasTmp;
     boolean hasWMS;
-    String  inputType;
-    Frame actual;
-    int WMS;
-
+    
+    String original;
+    String inputType;
+    
     public Precondition(String p)
     {
+        original = p;
         setUp(p);
     }
-   
+    
+    public Precondition(String i, boolean frame, boolean WMS, boolean tmp)
+    {
+        hasFrame = frame;
+        hasTmp = tmp;
+        hasWMS = WMS;
+        
+        inputType = i;
+    }
+    
+    public boolean hasFrame()
+    {
+        return hasFrame;
+    }
+    
+    public boolean hasWMS()
+    {
+        return hasWMS;
+    }
+    
+    public boolean hasTMP()
+    {
+        return hasTmp;
+    }
+    
+    public String getInputType()
+    {
+        return inputType;
+    }
+    
     public void setUp(String p)
     {
-        //input types: digit(i), teen, decade, hundred, thousand(k), million, billion
+        //input = b, frame = n, tmp = n, wms = n
         
-        //string looks like these:
-        // input = i, frame = n 'n', wms = n 0
-        // input = i, frame = y 'k', wms = y 8 
-       
-        String input = p.substring(8,9);
+        inputType = p.substring(8,9);
         
-        //System.out.println(input);
-        
-        String f = p.substring(19);
+        String f = p.substring(19, 20);
+        String t = p.substring(28, 29);
+        String w = p.substring(37, 38);
         
         if(f.equals("n"))
         {
@@ -32,18 +60,16 @@ public class Precondition
         else
         {
             hasFrame = true;
-            
-            String size = p.substring(22, 23) ;        
-            actual = new Frame(size);
-            
-            //System.out.println(size);
         }
         
-        //System.out.println(hasFrame);
-        
-        String w = p.substring(32,33);
-        
-        //System.out.println(w);
+        if(t.equals("n"))
+        {
+            hasTmp = false;
+        }
+        else
+        {
+            hasTmp = true;
+        }
         
         if(w.equals("n"))
         {
@@ -52,14 +78,18 @@ public class Precondition
         else
         {
             hasWMS = true;
-            
-            String wms = p.substring(34);
-            
-            WMS = Integer.parseInt(wms);
-            
-            //System.out.println(WMS);
         }
         
-        //System.out.println(hasWMS);
+        /*
+        System.out.println("input: " + inputType);
+        System.out.println("frame: " + hasFrame);
+        System.out.println("tmp: " + hasTmp);
+        System.out.println("WMS: " + hasWMS);
+        */
+    }
+    
+    public String toString()
+    {
+        return original;
     }
 }
