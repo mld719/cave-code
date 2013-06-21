@@ -1,152 +1,357 @@
+
+
+import java.util.*;
+
 /**
- * ADAPT Model Frame Class
+ * ADAPT Model Code - Frame Class
  * 
  * @author Megan DeLaunay
  * @version 1/28/13
  */
+ 
 public class Frame
 {
     //instance variables
-    int[] frame;
     String size;
     int length;
-
+    ArrayList<Chunk> array; 
+    
     public Frame()
     {
-        frame = null;
+        array = null;
+    }
+    
+    public Frame(Frame f)
+    {
+        size = f.getSize();
+        length = f.getLength();
+        array = f.getFull();
+        
     }
     
     public Frame(String s)
     {
         size = s;
+        Chunk c = new Chunk();
         
-        if(s.equals("hundred"))
+        if(size.equals("b"))
         {
-            frame = new int[2];
-            size = s;
-            length = 2;
-        }
-        else if(s.equals("thousand"))
-        {
-            frame = new int[3];
-            size = s;
-            length = 3;
-        }
-        else if(s.equals("million"))
-        {
-            frame = new int[6];
-            size = s;
-            length = 6;
-        }
-        else if(s.equals("billion"))
-        {
-            frame = new int[9];
-            size = s;
-            length = 9;
-        }
-    }
-    
-    public Frame(String s, int n)
-    {
-        if(s.equals("hundred"))
-        {
-            frame = new int[3];
-            frame[0] = n;
-            size = s;
-            length = 3;
-        }
-        else if(s.equals("thousand"))
-        {
-            frame = new int[4];
-            frame[0] = n;
-            size = s;
+            array = new ArrayList<Chunk>(4);           
+            
+            for(int i = 0; i < 4; i++)
+            {
+                array.add(c);
+            }
+            
             length = 4;
         }
-        else if(s.equals("million"))
+        else if(size.equals("m"))
         {
-            frame = new int[7];
-            frame[0] = n;
-            size = s;
-            length = 7;
+            array = new ArrayList<Chunk>(3);
+            
+            for(int i = 0; i < 3; i++)
+            {
+                array.add(c);
+            }
+            length = 3;
         }
-        else if(s.equals("billion"))
+        else if(size.equals("k"))
         {
-            frame = new int[10];
-            frame[0] = n;
-            size = s;
-            length = 10;
-        }
-        else if(s.equals("decade"))
-        {
-            frame = new int[2];
-            frame[0] = n;
-            size = s;
+            array = new ArrayList<Chunk>(2);
+            
+            for(int i = 0; i < 2; i++)
+            {
+                array.add(c);
+            }
+            
             length = 2;
+        }
+        else
+        {
+            array = new ArrayList<Chunk>(1);
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(c);
+            }
+            
+            length = 1;
         }
     }
     
-    public void setNumber(int position, int number)
+    public Frame(String s, int num)
     {
-        //should position go from left to right or right to left like a number?
+        size = s;
+        Chunk ch = new Chunk();
         
-        if(number > 9)
+        if(size.equals("b"))
+        {
+            array = new ArrayList<Chunk>(4);
+            length = 4;
+            
+            for(int i = 0; i < 4; i++)
+            {
+                array.add(ch);
+            }
+            
+            //WHY IS IT ADDING IT TO EVERY CHUNK
+            Chunk t = new Chunk();
+            t.insert(num, 2);
+            
+            array.set(0, t);
+            
+            //array.get(0).insert(num, 2);
+            
+            //Chunk c = array.get(0);
+            //c.insert(num, 2);
+        }
+        else if(size.equals("m"))
+        {
+            array = new ArrayList<Chunk>(3);
+            length = 3;
+            
+            for(int i = 0; i < 3; i++)
+            {
+                array.add(ch);
+            }
+            
+            Chunk t = new Chunk();
+            t.insert(num, 2);
+            
+            array.set(0, t);
+        }
+        else if(size.equals("k"))
+        {
+            array = new ArrayList<Chunk>(2);
+            length = 2;
+            
+            for(int i = 0; i < 2; i++)
+            {
+                array.add(ch);
+            }
+            
+            Chunk t = new Chunk();
+            t.insert(num, 2);
+            
+            array.set(0, t);
+        }
+        else if(size.equals("h"))
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+            
+            Chunk t = new Chunk();
+            t.insert(num, 0);
+            
+            array.set(0, t);
+        }  
+        else if(size.equals("d"))
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+            
+            Chunk t = new Chunk();
+            t.insert(num, 1);
+            
+            array.set(0, t);
+        }
+        else 
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+            
+            Chunk t = new Chunk();
+            t.insert(num, 2);
+            
+            array.set(0, t);
+        }   
+    }
+    
+    public Frame(String s, Chunk c)
+    {
+        size = s;
+        Chunk ch = new Chunk();
+        
+        if(size.equals("b"))
+        {
+            array = new ArrayList<Chunk>(4);
+            length = 4;
+            
+            for(int i = 0; i < 4; i++)
+            {
+                array.add(ch);
+            }
+            
+            
+            array.set(0, c);
+            
+            //array.get(0).insert(num, 2);
+            
+            //Chunk c = array.get(0);
+            //c.insert(num, 2);
+        }
+        else if(size.equals("m"))
+        {
+            array = new ArrayList<Chunk>(3);
+            length = 3;
+            
+            for(int i = 0; i < 3; i++)
+            {
+                array.add(ch);
+            }
+            
+            
+            array.set(0, c);
+        }
+        else if(size.equals("k"))
+        {
+            array = new ArrayList<Chunk>(2);
+            length = 2;
+            
+            for(int i = 0; i < 2; i++)
+            {
+                array.add(ch);
+            }
+            
+            
+            array.set(0, c);
+        }
+        else if(size.equals("h"))
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+
+            
+            array.set(0, c);
+        }  
+        else if(size.equals("d"))
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+            
+            
+            array.set(0, c);
+        }
+        else 
+        {
+            array = new ArrayList<Chunk>(1);
+            length = 1;
+            
+            for(int i = 0; i < 1; i++)
+            {
+                array.add(ch);
+            }
+            
+            
+            array.set(0, c);
+        }   
+    }
+    
+    public Chunk getChunk(int pos)
+    {
+        return array.get(pos);
+    }
+    
+    public void setChunk(int pos, Chunk c)
+    {
+        array.set(pos, c);
+    }
+    
+    public String getSize()
+    {
+        return size;
+    }
+    
+    public int getLength()
+    {
+        return length;
+    }
+    
+    public ArrayList<Chunk> getFull()
+    {
+        return array;
+    }
+    
+    public Frame overlap(Frame smaller)
+    {
+        //this method takes two frames and inserts the smaller into the bigger
+        //ex: five billion six million creates a billion and a million frame; this inserts
+        //the million frame into the correct spot in the billion frame
+        
+        Frame bigger = this; //ease of words
+        
+        if( (bigger.getSize().equals("b") && smaller.getSize().equals("m")) ||
+                (bigger.getSize().equals("m") && smaller.getSize().equals("k")) ||
+                (bigger.getSize().equals("k") && smaller.getSize().equals("h"))
+                )
+        {
+            Chunk c = smaller.getChunk(0);
+            bigger.setChunk(1, c);
+        }
+        else if( (bigger.getSize().equals("b") && smaller.getSize().equals("k")) ||
+                    (bigger.getSize().equals("m") && smaller.getSize().equals("h"))
+                    )
+        {
+            Chunk c = smaller.getChunk(0);
+            bigger.setChunk(2, c);
+        }
+        else if( bigger.getSize().equals("b") && smaller.getSize().equals("h"))
+        {
+            Chunk c = smaller.getChunk(0);
+            bigger.setChunk(3, c);
+        }
+        
+        return bigger;
+    }
+    
+    public void setNumber(int position, int num)
+    {
+        
+        if(num > 9)
         {
             System.out.println("Cannot add a number more than one digit to each frame place");
         }
         
-        frame[position] = number;
+        //array[position] = num;
     }
     
-    public int getNumber(int position)
-    {
-        return frame[position];
-    }
-    
-    //will work as long as the algorithm works to fill in all zeros at one time, not just place by place
-    //not needed! array is initialized to all zeros.
-    public void setZero()
-    {
-        for(int i = 0; i < frame.length; i++)
-        {
-            if(frame[i] == 0)//check
-            {
-                frame[i] = 0;
-            }
-        }
-    }
-    
-    //will stick a frame to the right of the exisiting frame
-    public void merge(Frame newFrame)
-    {
-        //depends on what the current frame is
-    }
-    
-    //will put a frame on top of the exisitng frame (for example, hundred on million frame)
-    public void overlap(Frame littleFrame)
-    {
-        if((littleFrame.size).equals("hundred"))
-        {
-            int num = littleFrame.getNumber(0);
-            setNumber(1, num);
-        }
-        else //if ((littleFrame.size).equals("thousand"))
-        {
-            int num = littleFrame.getNumber(0);
-            setNumber((frame.length - 4), num);
-        }
-        
-    }
-    
-    public void print()
+    public String toString()
     {
         String s = new String();
         
-        for(int i = 0; i < frame.length; i++)
+        for(int i = 0; i < array.size(); i++)
         {
-            String num = Integer.toString(frame[i]);
-            s = s + " " + num;
+            s = s.concat(array.get(i).toString() + "  ");
         }
         
-        System.out.println(s);
+        return s.trim();
     }
+    
 }
+
+
