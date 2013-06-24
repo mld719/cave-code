@@ -143,24 +143,31 @@ public class Model
             if(scanner.hasNext())
             {
                 word = scanner.next();
-                //System.out.println(word);
+                System.out.println(word);
+            }
+
+            if(word.equals(""))
+            {
+                System.out.println("end");
             }
             
             Precondition p = setPrecondition(word);
+            System.out.println("Precondion Made: " + p.toString());
             //now need to match this precondition to the right production
 
             double[] matches = matchProds(p, prods); //now has 0 - 1 matching score (increment by 0.2);
             //need to now pick which one # is the best, pick that production, and fire that action
 
             int index = findBestProd(matches);
+            
             Production bestMatch = prods.get(index);
 
-            System.out.println(bestMatch);
+            System.out.println("Production Index Chosen: " + index);
+            System.out.println("Production Chosen: " + bestMatch.toString());
 
             fire(bestMatch.getAction(), word);
 
         }
-
 
         System.out.println(currentFrame.toString());
     }
@@ -300,6 +307,10 @@ public class Model
             }
              */
 
+            match = Math.pow(match, 18);
+
+            //System.out.println(match);
+
             matches[i] = match;
         }
 
@@ -310,19 +321,35 @@ public class Model
     {
         //find highest value in array and then get corresponding production from list of prods
 
+        //now want to set up the dart thing. so sum all the scores, find a random number between the two, and then subtract/
+
         int index = 0;
-        double max = array[0];
+        double sum = 0.0;
 
-        for(int i = 0; i < array.length - 1; i++)
+        for(int i = 0; i < array.length; i++)
         {
-            if(array[i+1] > max)
-            {
-                max = array[i+1];
-                index = i+1;
-            }
-
+            sum = sum + array[i];
         }
 
+        System.out.println("Sum of Matching Values: " + sum);
+
+        Random rng = new Random();
+
+        double d = rng.nextDouble();
+        d = d*sum;
+
+        double place = 0.0;
+
+        int i = 0;
+        while(place <= d)
+        {
+            place = place + array[i];
+            i++;
+        }
+
+        System.out.println("Random Chosen: " + d);
+        
+        index = i - 1;
         //System.out.println(index);
         return index;
     }
@@ -330,6 +357,11 @@ public class Model
     public void fire(Action a, String word)
     {
 
+        //if current frame is null, create a frame because you need one
+        // if current frame is smaller than the new one would be, create the bigger one and insert
+        // the smaller one into the first chunk of the big one
+
+        //if the current frame is the biggest, then just create a new chunk to insert
 
         currentState = a.update(currentState, word);
 
@@ -337,6 +369,8 @@ public class Model
         currentTmp   = currentState.getTMP();
         WMS          = currentState.getWMS();
 
+        System.out.println(currentState.toString());
+        
         //figure out what to return here.
         //what if i return a precondition
 
