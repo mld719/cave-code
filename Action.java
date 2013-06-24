@@ -1,4 +1,10 @@
 
+/**
+ * Write a description of class Action here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
 public class Action
 {
     String[] steps;
@@ -93,7 +99,16 @@ public class Action
             }
             else if(step.contains("overlap"))
             {
-                frame.overlap(f);
+                
+                if(frame == null)
+                {
+                    frame = f;
+                }
+                else
+                {
+                    frame.overlap(f);
+                }
+                
             }
             else if(step.startsWith("f = "))
             {
@@ -113,6 +128,7 @@ public class Action
             }
             else if(step.equals("STOP"))
             {
+                //System.out.println("SHOULD HAVE STOPPED");
                 break;
             }
             
@@ -233,6 +249,11 @@ public class Action
     
     public void replaceTmp(String step)
     {
+        if(tmp == null)
+        {
+            tmp = new Chunk("__", "__", "__");
+        }
+        
         if(step.contains("WMS"))
         {
             int position = Integer.parseInt(step.substring(14));
